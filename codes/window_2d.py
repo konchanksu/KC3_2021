@@ -111,6 +111,7 @@ def levi_function_n13() -> Function2D:
         best=(1, 1),
     )
 
+
 def easom_function() -> Function2D:
     """
     Easom function
@@ -119,7 +120,9 @@ def easom_function() -> Function2D:
         Function2D: [description]
     """
     return Function2D(
-        lambda x, y: - np.cos(x) * np.cos(y) * np.exp( - ((x - np.pi) ** 2+ (y - np.pi) ** 2) ),
+        lambda x, y: -np.cos(x)
+        * np.cos(y)
+        * np.exp(-((x - np.pi) ** 2 + (y - np.pi) ** 2)),
         x_domain=(-20, 20),
         y_domain=(-20, 20),
         best=(np.pi, np.pi),
