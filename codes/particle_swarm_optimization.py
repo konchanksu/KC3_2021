@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-粒子群最適化を実装するクラス
+粒子群最適化の実装
 """
 
 
 __author__ = "Hidemasa Kondo (C.A.C.)"
-__date__ = "(created at 2021/08/04)"
+__date__ = "updated at 2021/08/24 (created at 2021/08/04)"
 __version__ = "1.0.0"
 
 import random
@@ -31,8 +31,13 @@ class ParticleSwarmOptimization:
         C2: float = 0.95  # 群の最良に対する係数
         W: float = 0.9  # 慣性定数
 
-        def __init__(self, func: Function2D):
-            """コンストラクタ"""
+        def __init__(self, func: Function2D) -> None:
+            """
+            コンストラクタ
+
+            Args:
+                func (Function2D): 目的関数
+            """
             self.func: Function2D = func
             self.point: List[float] = [self.init_x(), self.init_y()]
             self.v: List[float] = [
@@ -50,13 +55,13 @@ class ParticleSwarmOptimization:
             """xを定義域の中でランダムに初期化する"""
             return random.uniform(*self.func.y_domain)
 
-        def move(self):
-            """粒子群を次の位置に移動する"""
+        def move(self) -> None:
+            """粒子が次の位置に移動する"""
             for i in range(self.N_DIM):
                 self.point[i] += self.v[i]
             self.point = list(self.func.set_point_in_domain(*self.point))
 
-        def update_velocity(self, group_best_point: List[float]):
+        def update_velocity(self, group_best_point: List[float]) -> None:
             """速度を更新する"""
             for i in range(ParticleSwarmOptimization.Particle.N_DIM):
                 self.v[i] = (
@@ -69,15 +74,20 @@ class ParticleSwarmOptimization:
                     * (group_best_point[i] - self.point[i])
                 )
 
-        def eval(self):
+        def eval(self) -> None:
             """現在の座標を評価し、これまでの最も良い座標であれば更新する"""
             result = self.func(*self.point)
             if self.my_best_score > result:
                 self.my_best_score = result
                 self.my_best_point = copy(self.point)
 
-    def __init__(self, func: Function2D):
-        """コンストラクタ"""
+    def __init__(self, func: Function2D) -> None:
+        """
+        コンストラクタ
+
+        Args:
+            func (Function2D): 目的関数
+        """
         self.func: Function2D = func
         self.particles: List[self.Particle] = [
             self.Particle(self.func) for _ in range(ParticleSwarmOptimization.N)
@@ -90,11 +100,11 @@ class ParticleSwarmOptimization:
         関数を設定する
 
         Args:
-            func (Function2D): [description]
+            func (Function2D): 目的関数
         """
         self.func = func
 
-    def learn(self):
+    def learn(self) -> None:
         """
         群を学習させる
         学習できてえらい！
@@ -112,7 +122,7 @@ class ParticleSwarmOptimization:
             )
         return scatter_data
 
-    def eval(self):
+    def eval(self) -> None:
         """全ての粒子を評価する"""
         for particle in self.particles:
             particle.eval()
@@ -120,12 +130,12 @@ class ParticleSwarmOptimization:
                 self.group_best_point_score = particle.my_best_score
                 self.group_best_point_point = copy(particle.my_best_point)
 
-    def move(self):
+    def move(self) -> None:
         """全ての粒子を移動させる"""
         for particle in self.particles:
             particle.move()
 
-    def update_velocity(self):
+    def update_velocity(self) -> None:
         """全ての粒子の速度を更新する"""
         for particle in self.particles:
             particle.update_velocity(self.group_best_point_point)
@@ -142,11 +152,11 @@ class ParticleSwarmOptimization:
         変数を設定する
 
         Args:
-            N (int, optional): [description]. Defaults to None.
-            LOOP (int, optional): [description]. Defaults to None.
-            C1 (float, optional): [description]. Defaults to None.
-            C2 (float, optional): [description]. Defaults to None.
-            W (float, optional): [description]. Defaults to None.
+            N (int, optional): N. Defaults to None.
+            LOOP (int, optional): LOOP. Defaults to None.
+            C1 (float, optional): それぞれの粒子のC1. Defaults to None.
+            C2 (float, optional): それぞれの粒子のC2. Defaults to None.
+            W (float, optional): それぞれの粒子のW. Defaults to None.
         """
         try:
             n = int(n)
@@ -185,9 +195,9 @@ class ParticleSwarmOptimization:
         else:
             ParticleSwarmOptimization.Particle.W = w
 
-    def reset(self):
+    def reset(self) -> None:
         """
-        リセットする
+        学習を初期化する
         """
         self.particles = [
             self.Particle(self.func) for _ in range(ParticleSwarmOptimization.N)

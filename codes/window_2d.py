@@ -41,92 +41,10 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from function_2d import Function2D
+from functions import TestFunctions
 from particle_swarm_optimization import ParticleSwarmOptimization
 
 matplotlib.use("tkagg")
-
-
-def ackley_function() -> Function2D:
-    """
-    Ackley functionを返す関数
-
-    Returns:
-        Function2D: Ackley function
-    """
-    return Function2D(
-        func=lambda x, y: 20
-        - 20 * np.exp(-0.2 * np.sqrt(1 / 2 * (x ** 2 + y ** 2)))
-        + np.e
-        - np.exp(1 / 2 * (np.cos(2 * np.pi * x) + np.cos(2 * np.pi * y))),
-        x_domain=(-10, 10),
-        y_domain=(-10, 10),
-        best=(0, 0),
-    )
-
-
-def rosenbrock_function() -> Function2D:
-    """
-    Rosenbrock functionを返す関数
-
-    Returns:
-        Function2D: Rosenbrock function
-    """
-    return Function2D(
-        func=lambda x, y: 100 * (y - (x) ** 2) ** 2 + (1 - x) ** 2,
-        x_domain=(-5, 5),
-        y_domain=(-5, 5),
-        best=(1, 1),
-    )
-
-
-def bukin_function_n6() -> Function2D:
-    """
-    Bukin function N.6を返す関数
-
-    Returns:
-        Function2D: Bukin function N.6
-    """
-    return Function2D(
-        func=lambda x, y: 100 * np.sqrt(np.abs(y - 0.01 * (x ** 2)))
-        + 0.01 * np.abs(x + 10),
-        x_domain=(-15, -5),
-        y_domain=(-3, 3),
-        best=(-10, 1),
-    )
-
-
-def levi_function_n13() -> Function2D:
-    """
-    Levi function N.13を返す関数
-
-    Returns:
-        Function2D: Levi function N.13
-    """
-    return Function2D(
-        lambda x, y: np.sin(3 * np.pi * x) ** 2
-        + ((x - 1) ** 2) * (1 + np.sin(3 * np.pi * y) ** 2)
-        + ((y - 1) ** 2) * (1 + np.sin(2 * np.pi * y) ** 2),
-        x_domain=(-10, 10),
-        y_domain=(-10, 10),
-        best=(1, 1),
-    )
-
-
-def easom_function() -> Function2D:
-    """
-    Easom functionを返す関数
-
-    Returns:
-        Function2D: Easom function
-    """
-    return Function2D(
-        lambda x, y: -np.cos(x)
-        * np.cos(y)
-        * np.exp(-((x - np.pi) ** 2 + (y - np.pi) ** 2)),
-        x_domain=(-20, 20),
-        y_domain=(-20, 20),
-        best=(np.pi, np.pi),
-    )
 
 
 class Window2D:
@@ -158,9 +76,20 @@ class Window2D:
 
         self.make_controurf()
 
+    def append_scatter_data(self, x_point, y_point) -> None:
+        """
+        散布図データを追加する
+
+        Args:
+            x_point ([type]): [description]
+            y_point ([type]): [description]
+        """
+        self.x_point = np.append(self.x_point, np.array([x_point]), axis=0)
+        self.y_point = np.append(self.y_point, np.array([y_point]), axis=0)
+
     def reset(self) -> None:
         """
-        初期化する
+        散布図を更新する時の初期化処理
         """
         self.x_point = np.empty((0, self.pso.N))
         self.y_point = np.empty((0, self.pso.N))
@@ -173,10 +102,10 @@ class Window2D:
 
     def set_func(self, func: Function2D) -> None:
         """
-        関数を設定する
+        PSOと自身に関数を設定する
 
         Args:
-            func (Function2D): [description]
+            func (Function2D): 関数オブジェクト
         """
         self.func = func
         self.pso.set_func(self.func)
@@ -187,14 +116,7 @@ class Window2D:
         群を学習させる
         """
         for data in self.pso.learn():
-            self.append_image(*data)
-
-    def append_image(self, x_point, y_point) -> None:
-        """
-        画像データを追加する
-        """
-        self.x_point = np.append(self.x_point, np.array([x_point]), axis=0)
-        self.y_point = np.append(self.y_point, np.array([y_point]), axis=0)
+            self.append_scatter_data(*data)
 
     @staticmethod
     def init_root() -> Tk:
@@ -242,6 +164,12 @@ class Window2D:
     def display_time_series_scale(self, frame: Frame) -> Scale:
         """
         時系列をいじることができるスケールを作成、表示する
+
+        Args:
+            frame (Frame): Tkのフレーム
+
+        Returns:
+            Scale: スケールのバーオブジェクト
         """
         return Scale(
             frame,
@@ -304,16 +232,20 @@ class SettingMenu:
 
     func_dict: Dict[str, Function2D] = {
         "tmp": Function2D(),
-        "Ackley Function": ackley_function(),
-        "Rosenbrock Function": rosenbrock_function(),
-        "Bukin function N.6": bukin_function_n6(),
-        "Levi function N.13": levi_function_n13(),
-        "Easom function": easom_function(),
+        "Ackley Function": TestFunctions.ackley_function(),
+        "Rosenbrock Function": TestFunctions.rosenbrock_function(),
+        "Bukin function N.6": TestFunctions.bukin_function_n6(),
+        "Levi function N.13": TestFunctions.levi_function_n13(),
+        "Easom function": TestFunctions.easom_function(),
     }
 
     def __init__(self, root: Tk, window2d: Window2D) -> None:
         """
         コンストラクタ
+
+        Args:
+            root (Tk): tkオブジェクト
+            window2d (Window2D): 呼び出し元の表示ウィンドウ
         """
         self.root: Tk = root
         self.menubar = Menu(self.root)
@@ -343,7 +275,7 @@ class SettingMenu:
         a_tk.title("PSO設定")
         return a_tk
 
-    def display_window(self):
+    def display_window(self) -> None:
         """
         設定ウィンドウを表示する
         """
@@ -402,11 +334,10 @@ class SettingMenu:
         設定を表示する
 
         Args:
-            frame (Frame): [description]
-            input_var (Variable): [description]
-            text (str): [description]
-            row (int): [description]
-            default ([type]): [description]
+            frame (Frame): フレームオブジェクト
+            input_var (Variable): 入力用の変数
+            text (str): ラベル用のテキスト
+            row (int): 表示のrow
         """
         label = Label(frame, text=text)
         label.grid(row=row, column=0, sticky="NESW")
@@ -421,17 +352,17 @@ class SettingMenu:
         c2: float = None,
         w: float = None,
         func: str = "tmp",
-    ):
+    ) -> None:
         """
         再計算
 
         Args:
-            sub_root (Tk): [description]
-            n (int, optional): [description]. Defaults to None.
-            loop (int, optional): [description]. Defaults to None.
-            c1 (float, optional): [description]. Defaults to None.
-            c2 (float, optional): [description]. Defaults to None.
-            w (float, optional): [description]. Defaults to None.
+            sub_root (Tk): Tkオブジェクト
+            n (int, optional): N. Defaults to None.
+            loop (int, optional): LOOP. Defaults to None.
+            c1 (float, optional): C1. Defaults to None.
+            c2 (float, optional): C2. Defaults to None.
+            w (float, optional): W. Defaults to None.
         """
         if func in SettingMenu.func_dict:
             self.now_func = func

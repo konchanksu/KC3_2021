@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-2変数関数を実装するクラス
+2変数(x, y)を入力とする関数を実装するクラス
 """
 
 
 __author__ = "Hidemasa Kondo (C.A.C.)"
-__date__ = "(created at 2021/08/11)"
+__date__ = "updated at 2021/08/24 (created at 2021/08/11)"
 __version__ = "1.0.0"
 
 from typing import Callable, Tuple
@@ -32,6 +32,7 @@ class Function2D:
                 2次元平面上で実数値を取る何らかの関数. Defaults to lambdax.
             x_domain (Tuple[int, int], optional): 関数のx軸の定義域. Defaults to (0, 10).
             y_domain (Tuple[int, int], optional): 関数のy軸の定義域. Defaults to (0, 10).
+            best (Tuple[int, int], optional): func(x, y)が最小となるx, y. Defaults to (5, 5).
         """
         self.x_domain: Tuple[int, int] = x_domain
         self.y_domain: Tuple[int, int] = y_domain
@@ -47,7 +48,7 @@ class Function2D:
             y (float): y座標の値
 
         Returns:
-            float: f(x, y)
+            float: func(x, y)
         """
         x, y = self.set_point_in_domain(x, y)
         return self.func(x, y)
