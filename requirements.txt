@@ -1,0 +1,4 @@
+black
+matplotlib
+numpy
+pylint
