@@ -12,7 +12,7 @@ https://qiita.com/tomitomi3/items/d4318bf7afbc1c835dda#bukin-function-n6
 
 
 __author__ = "Hidemasa Kondo (C.A.C.)"
-__date__ = "(created at 2021/08/04)"
+__date__ = "updated at 2021/08/24 (created at 2021/08/04)"
 __version__ = "1.0.0"
 
 import sys
@@ -48,10 +48,10 @@ matplotlib.use("tkagg")
 
 def ackley_function() -> Function2D:
     """
-    Ackley function
+    Ackley functionを返す関数
 
     Returns:
-        Function2D: 関数
+        Function2D: Ackley function
     """
     return Function2D(
         func=lambda x, y: 20
@@ -66,10 +66,10 @@ def ackley_function() -> Function2D:
 
 def rosenbrock_function() -> Function2D:
     """
-    Rosenbrock function
+    Rosenbrock functionを返す関数
 
     Returns:
-        Function2D: 関数
+        Function2D: Rosenbrock function
     """
     return Function2D(
         func=lambda x, y: 100 * (y - (x) ** 2) ** 2 + (1 - x) ** 2,
@@ -81,10 +81,10 @@ def rosenbrock_function() -> Function2D:
 
 def bukin_function_n6() -> Function2D:
     """
-    Bukin function N.6
+    Bukin function N.6を返す関数
 
     Returns:
-        Function2D: [description]
+        Function2D: Bukin function N.6
     """
     return Function2D(
         func=lambda x, y: 100 * np.sqrt(np.abs(y - 0.01 * (x ** 2)))
@@ -97,10 +97,10 @@ def bukin_function_n6() -> Function2D:
 
 def levi_function_n13() -> Function2D:
     """
-    Levi function N.13
+    Levi function N.13を返す関数
 
     Returns:
-        Function2D: [description]
+        Function2D: Levi function N.13
     """
     return Function2D(
         lambda x, y: np.sin(3 * np.pi * x) ** 2
@@ -114,10 +114,10 @@ def levi_function_n13() -> Function2D:
 
 def easom_function() -> Function2D:
     """
-    Easom function
+    Easom functionを返す関数
 
     Returns:
-        Function2D: [description]
+        Function2D: Easom function
     """
     return Function2D(
         lambda x, y: -np.cos(x)
@@ -131,8 +131,8 @@ def easom_function() -> Function2D:
 
 class Window2D:
     """
-    表示を行うクラス
-    matplotlibのアニメーション機能でgifアニメーションを生成
+    Tkinterで表示を行うクラス
+    matplotlibで散布図を表示する
     """
 
     def __init__(self) -> None:

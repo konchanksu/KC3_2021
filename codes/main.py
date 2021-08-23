@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-メインファイル
+メイン関数
 """
 
 __author__ = "Hidemasa Kondo (C.A.C.)"
