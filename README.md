@@ -31,7 +31,7 @@ pylint==2.9.6
 | `$ make clean` | 不要なファイルを消し、きれいにする |
 
 ### makeを使わずに実行
-`$ python main.py`(カレントディレクトリをとする`./codes/`)
+`$ python main.py`(カレントディレクトリを`./codes/`とする)
 
 ## 使い方
 ### グラフの見方
