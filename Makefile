@@ -23,7 +23,7 @@ test:
 
 wipe: clean
 	@find . -name ".DS_Store" -exec rm {} ";" -exec echo rm -f {} ";"
-	(cd ../ ; rm -f ./$(ARCHIVE).zip)
+	( cd ../ ; rm -f ./$(ARCHIVE).zip )
 
 clean:
 	@for each in ${PYCS} ; do echo "rm -f $${each}" ; rm -f $${each} ; done
@@ -32,15 +32,15 @@ clean:
 	@if [ -e $(LINTRST) ] ; then echo "rm -f $(LINTRST)" ; rm -f $(LINTRST) ; fi
 
 doc:
-	(cd $(WORKDIR); $(PYDOC) $(MY_MODULES))
+	( cd $(WORKDIR); $(PYDOC) $(MY_MODULES) )
 
 zip: wipe
-	(cd ../ ; zip -r ./$(ARCHIVE).zip ./$(ARCHIVE)/ --exclude \*/.git/\* \*.gitignore )
+	( cd ../ ; zip -r ./$(ARCHIVE).zip ./$(ARCHIVE)/ --exclude \*/.git/\* \*.gitignore )
 
 pydoc:
 	for each in $(MY_MODULES); \
 	do \
-		(cd $(WORKDIR); (sleep 3 ; open http://localhost:9999/$${each}.html) & $(PYDOC) -p 9999); \
+		( cd $(WORKDIR); ( sleep 3 ; open http://localhost:9999/$${each}.html ) & $(PYDOC) -p 9999 ); \
 	done;
 
 lint: modules clean reformat
@@ -57,11 +57,11 @@ lint: modules clean reformat
 pip:
 	@if [ -z `which pip` ]; \
 	then \
-		(cd $(WORKDIR); curl -O https://bootstrap.pypa.io/get-pip.py); \
-		(cd $(WORKDIR); sudo -H python get-pip.py); \
-		(cd $(WORKDIR); rm -r get-pip.py); \
+		( cd $(WORKDIR); curl -O https://bootstrap.pypa.io/get-pip.py ); \
+		( cd $(WORKDIR); sudo -H python get-pip.py ); \
+		( cd $(WORKDIR); rm -r get-pip.py ); \
 	else \
-		(cd $(WORKDIR); sudo -H pip install -U pip); \
+		( cd $(WORKDIR); sudo -H pip install -U pip ); \
 	fi
 
 #
@@ -72,7 +72,7 @@ modules: pip
 	do \
 		if [ -z `pip list --format=freeze | grep $${each}` ]; \
 		then \
-			(cd $(WORKDIR); sudo -H pip install $${each}); \
+			( cd $(WORKDIR); sudo -H pip install $${each} ); \
 		fi \
 	done
 
@@ -80,14 +80,14 @@ modules: pip
 # List of the required packages
 #
 list: pip
-	@(pip list --format=freeze | grep pip)
+	@( pip list --format=freeze | grep pip )
 	@for each in $(shell cat $(REQUIRE)); \
 	do \
 		if [ -z `pip list --format=freeze | grep $${each}` ]; \
 		then \
-			(echo $${each} not found); \
+			( echo $${each} not found ); \
 		else \
-			(sudo -H pip list --format=freeze | grep $${each}); \
+			( sudo -H pip list --format=freeze | grep $${each} ); \
 		fi \
 	done
 
@@ -98,6 +98,6 @@ update: modules
 reformat: modules
 	@for each in $(FILES); \
 	do \
-		(cd $(WORKDIR); $(REFORMAT) $${each}); \
+		( cd $(WORKDIR); $(REFORMAT) $${each} ) ; \
 	done \
 

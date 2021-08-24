@@ -239,6 +239,8 @@ class SettingMenu:
         "Easom function": TestFunctions.easom_function(),
     }
 
+    window_exist: bool = False
+
     def __init__(self, root: Tk, window2d: Window2D) -> None:
         """
         コンストラクタ
@@ -248,7 +250,8 @@ class SettingMenu:
             window2d (Window2D): 呼び出し元の表示ウィンドウ
         """
         self.root: Tk = root
-        self.menubar = Menu(self.root)
+        self.sub_root: Tk = None
+        self.menubar = Menu(self.root, tearoff=False)
         self.window2d: Window2D = window2d
         self.now_func: str = "tmp"
 
@@ -279,9 +282,12 @@ class SettingMenu:
         """
         設定ウィンドウを表示する
         """
-        sub_root = SettingMenu.init_root()
-        frame = Frame(sub_root)
-        frame_center = Frame(sub_root)
+        if SettingMenu.window_exist:
+            return
+        SettingMenu.window_exist = True
+        self.sub_root = SettingMenu.init_root()
+        frame = Frame(self.sub_root)
+        frame_center = Frame(self.sub_root)
         frame.grid()
         frame_center.grid()
 
@@ -324,9 +330,10 @@ class SettingMenu:
         )
         button_ok.grid(row=1, column=0, sticky="NESW")
 
-        sub_root.grid_rowconfigure(0, weight=1)
-        sub_root.grid_columnconfigure(0, weight=1)
-        sub_root.mainloop()
+        self.sub_root.grid_rowconfigure(0, weight=1)
+        self.sub_root.grid_columnconfigure(0, weight=1)
+        self.sub_root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.sub_root.mainloop()
 
     @staticmethod
     def input_setting(frame: Frame, input_var: Variable, text: str, row: int) -> None:
@@ -371,3 +378,10 @@ class SettingMenu:
         self.window2d.reset()
         self.window2d.learn()
         self.window2d.display_at_tk()
+
+    def on_closing(self) -> None:
+        """
+        Tkを終了する
+        """
+        SettingMenu.window_exist = False
+        self.sub_root.destroy()
