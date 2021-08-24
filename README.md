@@ -14,8 +14,8 @@ python version 3.8.2
 ### Modules
 pip==21.2.4  
 black==21.7b0  
-matplotlib==3.4.2  
-numpy==1.21.1  
+matplotlib==3.4.2 必須  
+numpy==1.21.1 必須  
 pylint==2.9.6  
 
 ## 実行方法
