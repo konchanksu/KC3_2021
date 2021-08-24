@@ -68,7 +68,7 @@ pip:
 # requirements.txtに書き込まれているモジュールのうち、含まれていないモジュールの一括インストールを行う
 #
 modules: pip
-	@for each in $(shell cat $(REQUIRE)); \
+	@for each in $( shell cat $(REQUIRE) ); \
 	do \
 		if [ -z `pip list --format=freeze | grep $${each}` ]; \
 		then \
@@ -81,7 +81,7 @@ modules: pip
 #
 list: pip
 	@( pip list --format=freeze | grep pip )
-	@for each in $(shell cat $(REQUIRE)); \
+	@for each in $( shell cat $(REQUIRE) ); \
 	do \
 		if [ -z `pip list --format=freeze | grep $${each}` ]; \
 		then \
