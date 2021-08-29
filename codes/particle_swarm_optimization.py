@@ -40,7 +40,7 @@ class ParticleSwarmOptimization:
             """
             self.func: Function2D = func
             self.point: List[float] = [self.init_x(), self.init_y()]
-            self.v: List[float] = [
+            self.velocity: List[float] = [
                 random.uniform(0, 1)
                 for _ in range(ParticleSwarmOptimization.Particle.N_DIM)
             ]
@@ -58,14 +58,14 @@ class ParticleSwarmOptimization:
         def move(self) -> None:
             """粒子が次の位置に移動する"""
             for i in range(self.N_DIM):
-                self.point[i] += self.v[i]
+                self.point[i] += self.velocity[i]
             self.point = list(self.func.set_point_in_domain(*self.point))
 
         def update_velocity(self, group_best_point: List[float]) -> None:
             """速度を更新する"""
             for i in range(ParticleSwarmOptimization.Particle.N_DIM):
-                self.v[i] = (
-                    ParticleSwarmOptimization.Particle.W * self.v[i]
+                self.velocity[i] = (
+                    ParticleSwarmOptimization.Particle.W * self.velocity[i]
                     + ParticleSwarmOptimization.Particle.C1
                     * random.random()
                     * (self.my_best_point[i] - self.point[i])
