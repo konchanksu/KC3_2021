@@ -343,7 +343,6 @@ class SettingMenu:
         self.sub_root.grid_rowconfigure(0, weight=1)
         self.sub_root.grid_columnconfigure(0, weight=1)
         self.sub_root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.sub_root.mainloop()
 
     @staticmethod
     def input_setting(frame: Frame, input_var: Variable, text: str, row: int) -> None:
