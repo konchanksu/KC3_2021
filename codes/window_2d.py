@@ -12,7 +12,7 @@ https://qiita.com/tomitomi3/items/d4318bf7afbc1c835dda#bukin-function-n6
 
 
 __author__ = "Hidemasa Kondo (C.A.C.)"
-__date__ = "updated at 2021/08/24 (created at 2021/08/04)"
+__date__ = "updated at 2021/08/30 (created at 2021/08/04)"
 __version__ = "1.0.0"
 
 import sys
@@ -30,6 +30,8 @@ from tkinter import (
     Toplevel,
     Label,
     Button,
+    DISABLED,
+    NORMAL,
     ttk,
 )
 from typing import Dict
@@ -254,6 +256,7 @@ class SettingMenu:
         self.menubar = Menu(self.root, tearoff=False)
         self.window2d: Window2D = window2d
         self.now_func: str = "tmp"
+        self.button_ok: Button = None
 
     def set_menubar(self) -> None:
         """
@@ -315,7 +318,7 @@ class SettingMenu:
         combobox_func.grid(row=0, column=0, sticky="NESW")
         combobox_func.current(combobox_func["value"].index(self.now_func))
 
-        button_ok = Button(
+        self.button_ok = Button(
             frame_center,
             text="更新",
             command=lambda: (
@@ -328,7 +331,7 @@ class SettingMenu:
                 )
             ),
         )
-        button_ok.grid(row=1, column=0, sticky="NESW")
+        self.button_ok.grid(row=1, column=0, sticky="NESW")
 
         self.sub_root.grid_rowconfigure(0, weight=1)
         self.sub_root.grid_columnconfigure(0, weight=1)
@@ -371,12 +374,14 @@ class SettingMenu:
             c2 (float, optional): C2. Defaults to None.
             w (float, optional): W. Defaults to None.
         """
+        self.button_ok["state"] = DISABLED
         if func in SettingMenu.func_dict:
             self.now_func = func
         self.window2d.pso.set_status(n=n, loop=loop, c1=c1, c2=c2, w=w)
         self.window2d.set_func(SettingMenu.func_dict[self.now_func])
         self.window2d.reset()
         self.window2d.learn()
+        self.button_ok["state"] = NORMAL
         self.window2d.display_at_tk()
 
     def on_closing(self) -> None:
