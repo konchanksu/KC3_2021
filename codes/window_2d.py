@@ -79,6 +79,8 @@ class Window2D:
         self.setting_menu: SettingMenu = SettingMenu(self.root, self)
         self.setting_menu.set_menubar()
 
+        self.a_scale: Scale = None
+
         self.make_controurf()
 
         # widgetの設定
@@ -156,11 +158,10 @@ class Window2D:
         """
         tkを用いて表示をおこなう
         """
-        a_scale = self.display_time_series_scale(self.frame_scale)
-        a_scale.grid(row=0, column=0)
+        del self.a_scale
+        self.a_scale = self.display_time_series_scale(self.frame_scale)
+        self.a_scale.grid(row=0, column=0)
         self.make_scatter(0)
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.root.mainloop()
 
     def display_time_series_scale(self, frame: Frame) -> Scale:
         """
@@ -224,6 +225,13 @@ class Window2D:
         実際に等高線を描くメソッド
         """
         self.axes.contourf(*self.contour, cmap="Blues", levels=15)
+
+    def mainloop(self) -> None:
+        """
+        メインループ
+        """
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.root.mainloop()
 
 
 class SettingMenu:
