@@ -68,6 +68,9 @@ class Window2D:
         self.root: Tk = Window2D.init_root()
         self.scale_var: DoubleVar = DoubleVar()
 
+        self.frame_plt: Frame = Frame(self.root)
+        self.frame_scale: Frame = Frame(self.root)
+
         self.contour = None
 
         self.figure: plt.Figure = plt.Figure()
@@ -77,6 +80,14 @@ class Window2D:
         self.setting_menu.set_menubar()
 
         self.make_controurf()
+
+        # widgetの設定
+        self.canvas = FigureCanvasTkAgg(self.figure, self.frame_plt)
+
+        # widgetの配置
+        self.frame_plt.grid(row=0, column=0)
+        self.frame_scale.grid(row=1, column=0)
+        self.canvas.get_tk_widget().grid(row=1, column=0)
 
     def append_scatter_data(self, x_point, y_point) -> None:
         """
@@ -145,21 +156,9 @@ class Window2D:
         """
         tkを用いて表示をおこなう
         """
-        frame_plt = Frame(self.root)
-        frame_scale = Frame(self.root)
-
-        a_scale = self.display_time_series_scale(frame_scale)
+        a_scale = self.display_time_series_scale(self.frame_scale)
         a_scale.grid(row=0, column=0)
-
-        # widgetの設定
-        canvas = FigureCanvasTkAgg(self.figure, frame_plt)
         self.make_scatter(0)
-
-        # widgetの配置
-        frame_plt.grid(row=0, column=0)
-        frame_scale.grid(row=1, column=0)
-        canvas.get_tk_widget().grid(row=1, column=0)
-
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
 
