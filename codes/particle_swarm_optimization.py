@@ -7,7 +7,7 @@
 
 
 __author__ = "Hidemasa Kondo (C.A.C.)"
-__date__ = "updated at 2021/08/24 (created at 2021/08/04)"
+__date__ = "updated at 2021/08/30 (created at 2021/08/04)"
 __version__ = "1.0.0"
 
 import random
@@ -92,8 +92,8 @@ class ParticleSwarmOptimization:
         self.particles: List[self.Particle] = [
             self.Particle(self.func) for _ in range(ParticleSwarmOptimization.N)
         ]
-        self.group_best_point_point: List[float] = []
-        self.group_best_point_score: float = float("inf")
+        self.group_best_point: List[float] = []
+        self.group_best_score: float = float("inf")
 
     def set_func(self, func: Function2D) -> None:
         """
@@ -126,9 +126,9 @@ class ParticleSwarmOptimization:
         """全ての粒子を評価する"""
         for particle in self.particles:
             particle.eval()
-            if particle.my_best_score < self.group_best_point_score:
-                self.group_best_point_score = particle.my_best_score
-                self.group_best_point_point = copy(particle.my_best_point)
+            if particle.my_best_score < self.group_best_score:
+                self.group_best_score = particle.my_best_score
+                self.group_best_point = copy(particle.my_best_point)
 
     def move(self) -> None:
         """全ての粒子を移動させる"""
@@ -138,7 +138,7 @@ class ParticleSwarmOptimization:
     def update_velocity(self) -> None:
         """全ての粒子の速度を更新する"""
         for particle in self.particles:
-            particle.update_velocity(self.group_best_point_point)
+            particle.update_velocity(self.group_best_point)
 
     @staticmethod
     def set_status(
@@ -202,5 +202,5 @@ class ParticleSwarmOptimization:
         self.particles = [
             self.Particle(self.func) for _ in range(ParticleSwarmOptimization.N)
         ]
-        self.group_best_point_point = []
-        self.group_best_point_score = float("inf")
+        self.group_best_point = []
+        self.group_best_score = float("inf")
