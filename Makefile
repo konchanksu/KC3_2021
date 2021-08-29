@@ -70,11 +70,13 @@ pip:
 modules: pip
 	@for each in $(shell cat $(REQUIRE)); \
 	do \
-		if [ -z `pip list --format=freeze | grep $${each}` ]; \
+		result=`pip list --format=freeze | grep $${each}` ; \
+		if [ -z $${result} ]; \
 		then \
 			( cd $(WORKDIR); sudo -H pip install $${each} ); \
 		fi \
 	done
+	@unset $${result}
 
 #
 # List of the required packages
@@ -83,13 +85,15 @@ list: pip
 	@( pip list --format=freeze | grep pip )
 	@for each in $(shell cat $(REQUIRE)); \
 	do \
-		if [ -z `pip list --format=freeze | grep $${each}` ]; \
+		result=`pip list --format=freeze | grep $${each}` ; \
+		if [ -z $${result} ]; \
 		then \
 			( echo $${each} not found ); \
 		else \
 			( sudo -H pip list --format=freeze | grep $${each} ); \
 		fi \
 	done
+	@unset $${result}
 
 prepare: modules
 

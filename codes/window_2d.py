@@ -198,7 +198,7 @@ class Window2D:
         self.axes.scatter(self.x_point[number], self.y_point[number], c="orange")
         self.figure.canvas.draw()
 
-    def make_controurf(self):
+    def make_controurf(self) -> None:
         """
         等高線を作成する
         """
@@ -218,7 +218,7 @@ class Window2D:
         )
         self.contour = [x_mesh, y_mesh, z]
 
-    def draw_controurf(self):
+    def draw_controurf(self) -> None:
         """
         実際に等高線を描くメソッド
         """
