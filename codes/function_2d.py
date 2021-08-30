@@ -29,7 +29,7 @@ class Function2D:
 
         Args:
             func (Callable[[float, float], float], optional):
-                2次元平面上で実数値を取る何らかの関数. Defaults to lambdax.
+                2次元平面上で実数値を取る何らかの関数. Defaults to lambda.
             x_domain (Tuple[int, int], optional): 関数のx軸の定義域. Defaults to (0, 10).
             y_domain (Tuple[int, int], optional): 関数のy軸の定義域. Defaults to (0, 10).
             best (Tuple[int, int], optional): func(x, y)が最小となるx, y. Defaults to (5, 5).

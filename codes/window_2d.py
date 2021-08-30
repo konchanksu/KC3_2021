@@ -96,8 +96,8 @@ class Window2D:
         散布図データを追加する
 
         Args:
-            x_point ([type]): [description]
-            y_point ([type]): [description]
+            x_point (list[float]): x座標達
+            y_point (list[float]): y座標達
         """
         self.x_point = np.append(self.x_point, np.array([x_point]), axis=0)
         self.y_point = np.append(self.y_point, np.array([y_point]), axis=0)
@@ -281,7 +281,7 @@ class SettingMenu:
         Tkオブジェクトを作成
 
         Returns:
-            Tk: [description]
+            Tk: Tkオブジェクト
         """
         a_tk = Toplevel()
         a_tk.geometry("600x400")
