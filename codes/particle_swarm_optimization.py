@@ -12,7 +12,7 @@ __version__ = "1.0.0"
 
 import random
 from copy import copy
-from typing import Final, List
+from typing import Final, List, Tuple
 
 from function_2d import Function2D
 
@@ -104,7 +104,7 @@ class ParticleSwarmOptimization:
         """
         self.func = func
 
-    def learn(self) -> None:
+    def learn(self) -> List[Tuple[List[float]]]:
         """
         群を学習させる
         学習できてえらい！
