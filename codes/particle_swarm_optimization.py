@@ -106,8 +106,7 @@ class ParticleSwarmOptimization:
 
     def learn(self) -> List[Tuple[List[float]]]:
         """
-        群を学習させる
-        学習できてえらい！
+        群を動かす
         """
         scatter_data = []
         for _ in range(ParticleSwarmOptimization.LOOP):
